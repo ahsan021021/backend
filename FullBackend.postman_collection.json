@@ -1,0 +1,275 @@
+{
+  "info": {
+    "name": "Full Backend API",
+    "description": "API endpoints for the entire backend functionality",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "User Management",
+      "item": [
+        {
+          "name": "Signup",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"yourpassword\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/signup",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "signup"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Verify Email",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"verificationCode\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/verify-email",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "verify-email"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"yourpassword\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/login",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "login"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Slot Management",
+      "item": [
+        {
+          "name": "Create Slot",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"slot_time\": \"10:00 AM\",\n  \"slot_date\": \"2023-10-30\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/slots",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "slots"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Slot by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:5000/api/slots/:id",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "slots",
+                ":id"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get All Slots",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:5000/api/slots",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "slots"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Slot by ID",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"slot_time\": \"11:00 AM\",\n  \"slot_date\": \"2023-10-31\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/slots/:id",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "slots",
+                ":id"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Slot by ID",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "http://localhost:5000/api/slots/:id",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "slots",
+                ":id"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Appointment Management",
+      "item": [
+        {
+          "name": "Create Appointment",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"slotId\": \"slot_id_here\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/appointments",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "appointments"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get All Appointments",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:5000/api/appointments",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "appointments"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Appointment by ID",
+          "request": {
+            "method": "PUT",
+            "url": {
+              "raw": "http://localhost:5000/api/appointments/:id",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "appointments",
+                ":id"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Appointment by ID",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "http://localhost:5000/api/appointments/:id",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "appointments",
+                ":id"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
