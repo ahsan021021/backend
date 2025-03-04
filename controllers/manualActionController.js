@@ -1,11 +1,15 @@
 import ManualAction from '../models/ManualAction.js';
 
-// Create a new manual action
 export const createManualAction = async (req, res) => {
+  const manualAction = new ManualAction({
+    ...req.body,
+    userId: req.user._id, // Associate manual action with the authenticated user
+  });
+
+
   try {
-    const newManualAction = new ManualAction(req.body);
-    await newManualAction.save();
-    res.status(201).json(newManualAction);
+    const savedManualAction = await manualAction.save();
+    res.status(201).json(savedManualAction);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -14,17 +18,17 @@ export const createManualAction = async (req, res) => {
 // Get all manual actions
 export const getManualActions = async (req, res) => {
   try {
-    const manualActions = await ManualAction.find();
+    const manualActions = await ManualAction.find({ userId: req.user._id });
     res.status(200).json(manualActions);
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
-// Get a single manual action by ID
 export const getManualActionById = async (req, res) => {
   try {
-    const manualAction = await ManualAction.findById(req.params.id);
+    const manualAction = await ManualAction.findOne({ _id: req.params.id, userId: req.user._id });
+
     if (!manualAction) return res.status(404).json({ message: 'Manual action not found' });
     res.status(200).json(manualAction);
   } catch (error) {
@@ -32,10 +36,14 @@ export const getManualActionById = async (req, res) => {
   }
 };
 
-// Update a manual action
 export const updateManualAction = async (req, res) => {
   try {
-    const manualAction = await ManualAction.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const manualAction = await ManualAction.findOneAndUpdate(
+      { _id: req.params.id, userId: req.user._id },
+      req.body,
+      { new: true }
+    );
+
     if (!manualAction) return res.status(404).json({ message: 'Manual action not found' });
     res.status(200).json(manualAction);
   } catch (error) {
@@ -43,10 +51,10 @@ export const updateManualAction = async (req, res) => {
   }
 };
 
-// Delete a manual action
 export const deleteManualAction = async (req, res) => {
   try {
-    const manualAction = await ManualAction.findByIdAndDelete(req.params.id);
+    const manualAction = await ManualAction.findOneAndDelete({ _id: req.params.id, userId: req.user._id });
+
     if (!manualAction) return res.status(404).json({ message: 'Manual action not found' });
     res.status(200).json({ message: 'Manual action deleted successfully' });
   } catch (error) {

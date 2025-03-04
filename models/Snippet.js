@@ -8,6 +8,4 @@ const snippetSchema = new mongoose.Schema({
   subject: { type: String }, // Only for email snippets
 });
 
-const Snippet = mongoose.model('Snippet', snippetSchema);
-
-export default Snippet;
+export default mongoose.models.Snippet || mongoose.model('Snippet', snippetSchema);

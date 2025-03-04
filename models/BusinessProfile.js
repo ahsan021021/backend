@@ -5,7 +5,8 @@ const BusinessProfileSchema = new mongoose.Schema({
   businessEmail: { type: String, required: true },
   businessPhone: { type: String, required: true },
   businessAddress: { type: String, required: true },
-  businessLogo: { type: String }, // Store the URL or base64 string of the logo
+  userId: { type: mongoose.Schema.Types.ObjectId, required: true } // Associate with userId
 });
 
-export default mongoose.model('BusinessProfile', BusinessProfileSchema);
+
+export default mongoose.model('BusinessProfile', BusinessProfileSchema)

@@ -12,26 +12,11 @@ const router = express.Router();
 /*
  * POST a new lead
  */
-router.post('/leads', createLead);
+router.post('/leads', authenticateToken, createLead);
+router.get('/leads', authenticateToken, getLeads);
+router.get('/leads/:id', authenticateToken, getLeadById);
+router.put('/leads/:id', authenticateToken, updateLead);
+router.delete('/leads/:id', authenticateToken, deleteLead);
 
-/*
- * GET all leads
- */
-router.get('/leads', getLeads);
-
-/*
- * GET a single lead by ID
- */
-router.get('/leads/:id', getLeadById);
-
-/*
- * PUT to update an existing lead
- */
-router.put('/leads/:id', updateLead);
-
-/*
- * DELETE a lead
- */
-router.delete('/leads/:id', deleteLead);
 
 export default router;

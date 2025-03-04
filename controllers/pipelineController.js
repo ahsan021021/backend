@@ -1,8 +1,8 @@
-import Pipeline from '../models/pipelineModel.js';
+import Pipeline from '../models/Pipeline.js';
 
 export const getPipelines = async (req, res) => {
   try {
-    const pipelines = await Pipeline.find();
+    const pipelines = await Pipeline.find({ userId: req.user._id });
     res.status(200).json(pipelines);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -10,7 +10,11 @@ export const getPipelines = async (req, res) => {
 };
 
 export const createPipeline = async (req, res) => {
-  const pipeline = new Pipeline(req.body);
+  const pipeline = new Pipeline({
+    ...req.body,
+    userId: req.user._id,
+  });
+
   try {
     const savedPipeline = await pipeline.save();
     res.status(201).json(savedPipeline);
@@ -19,19 +23,41 @@ export const createPipeline = async (req, res) => {
   }
 };
 
+export const getPipeline = async (req, res) => {
+  try {
+    const pipeline = await Pipeline.findOne({ _id: req.params.id, userId: req.user._id });
+    if (!pipeline) {
+      return res.status(404).json({ message: 'Pipeline not found.' });
+    }
+    res.json(pipeline);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 export const updatePipeline = async (req, res) => {
   try {
-    const updatedPipeline = await Pipeline.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    res.status(200).json(updatedPipeline);
+    const pipeline = await Pipeline.findOneAndUpdate(
+      { _id: req.params.id, userId: req.user._id },
+      req.body,
+      { new: true }
+    );
+    if (!pipeline) {
+      return res.status(404).json({ message: 'Pipeline not found.' });
+    }
+    res.json(pipeline);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
 export const deletePipeline = async (req, res) => {
   try {
-    await Pipeline.findByIdAndDelete(req.params.id);
-    res.status(200).json({ message: 'Pipeline deleted successfully' });
+    const pipeline = await Pipeline.findOneAndDelete({ _id: req.params.id, userId: req.user._id });
+    if (!pipeline) {
+      return res.status(404).json({ message: 'Pipeline not found.' });
+    }
+    res.json({ message: 'Pipeline removed successfully.' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

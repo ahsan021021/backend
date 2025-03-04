@@ -1,17 +1,11 @@
 import express from 'express';
-import {
-  createSnippet,
-  getSnippets,
-  getSnippetById,
-  updateSnippet,
-  deleteSnippet,
-} from '../controllers/snippetController.js';
+import { getSnippets, createSnippet, getSnippet, updateSnippet, deleteSnippet } from '../controllers/snippetController.js';
 
 const router = express.Router();
 
-router.post('/', createSnippet);
 router.get('/', getSnippets);
-router.get('/:id', getSnippetById);
+router.post('/', createSnippet);
+router.get('/:id', getSnippet);
 router.put('/:id', updateSnippet);
 router.delete('/:id', deleteSnippet);
 

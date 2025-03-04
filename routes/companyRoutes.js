@@ -1,9 +1,11 @@
 import express from 'express';
-import { getCompanies, createCompany } from '../controllers/companyController.js';
+import { getCompanies, createCompany, deleteCompany } from '../controllers/companyController.js';
+import { authenticateToken } from '../middleware/auth.js';
 
 const router = express.Router();
 
-router.get('/', getCompanies);
-router.post('/', createCompany);
+router.get('/', authenticateToken, getCompanies);
+router.post('/', authenticateToken, createCompany);
+router.delete('/:id', authenticateToken, deleteCompany);
 
 export default router;

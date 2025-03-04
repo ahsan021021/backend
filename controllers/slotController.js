@@ -1,101 +1,69 @@
-import SlotModel from '../models/slotModel.js';  // Import the slot model
-import mongoose from 'mongoose';  // Import mongoose for ObjectId validation
+import Slot from '../models/Slot.js';
 
-// Function to create a slot
-export const createSlot = async (req, res) => {
+// Get all slots
+export const getSlots = async (req, res) => {
   try {
-    const { slot_time, slot_date } = req.body;
-
-    // Create a new slot
-    const newSlot = new SlotModel({
-      slot_time,
-      slot_date,
-      created_at: Date.now()
-    });
-
-    // Save the slot to the database
-    await newSlot.save();
-
-    res.status(201).json({ message: 'Slot created successfully' });
+    const slots = await Slot.find({ userId: req.user._id });
+    res.status(200).json(slots);
   } catch (error) {
-    console.error('Create Slot Error:', error);
-    res.status(500).json({ message: 'Server error', error });
+    res.status(500).json({ message: error.message });
   }
 };
 
-// Function to get a single slot by ID
+// Create a new slot
+export const createSlot = async (req, res) => {
+  const slot = new Slot({
+    ...req.body,
+    userId: req.user._id,
+  });
+
+  try {
+    const savedSlot = await slot.save();
+    res.status(201).json(savedSlot);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+// Get a single slot by ID
 export const getSlot = async (req, res) => {
   try {
-    const { id } = req.params;
-
-    // Validate ObjectId
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({ message: 'Invalid ID format' });
-    }
-
-    const slot = await SlotModel.findById(id);
-
+    const slot = await Slot.findOne({ _id: req.params.id, userId: req.user._id });
     if (!slot) {
-      return res.status(400).json({ message: 'Slot not found' });
+      return res.status(404).json({ message: 'Slot not found.' });
     }
-
     res.json(slot);
   } catch (error) {
-    console.error('Get Slot Error:', error);
-    res.status(500).json({ message: 'Server error', error });
+    res.status(500).json({ message: error.message });
   }
 };
 
-// Function to get all slots
-export const getAllSlots = async (req, res) => {
-  try {
-    // Fetch all slots from the database
-    const slots = await SlotModel.find();
-
-    res.json(slots);
-  } catch (error) {
-    console.error('Get All Slots Error:', error);
-    res.status(500).json({ message: 'Server error', error });
-  }
-};
-
-// Function to update a slot
+// Update a slot
 export const updateSlot = async (req, res) => {
   try {
-    const { id } = req.params;
-    const { slot_time, slot_date } = req.body;
-
-    // Find the slot by ID and update it
-    const updatedSlot = await SlotModel.findByIdAndUpdate(id, {
-      slot_time,
-      slot_date
-    }, { new: true });
-
-    if (!updatedSlot) {
-      return res.status(400).json({ message: 'Slot not found' });
+    const slot = await Slot.findOneAndUpdate(
+      { _id: req.params.id, userId: req.user._id },
+      req.body,
+      { new: true }
+    );
+    if (!slot) {
+      return res.status(404).json({ message: 'Slot not found.' });
     }
-
-    res.json(updatedSlot);
+    res.json(slot);
   } catch (error) {
-    console.error('Update Slot Error:', error);
-    res.status(500).json({ message: 'Server error', error });
+    res.status(500).json({ message: error.message });
   }
 };
 
-// Function to delete a slot
+// Delete a slot
 export const deleteSlot = async (req, res) => {
   try {
-    const { id } = req.params;
-
-    // Find the slot by ID and delete it
-    const deletedSlot = await SlotModel.findByIdAndRemove(id);
-    if (!deletedSlot) {
-      return res.status(400).json({ message: 'Slot not found' });
+    const slot = await Slot.findOneAndDelete({ _id: req.params.id, userId: req.user._id });
+    if (!slot) {
+      return res.status(404).json({ message: 'Slot not found.' });
     }
-
-    res.json({ message: 'Slot deleted successfully' });
+    res.json({ message: 'Slot removed successfully.' });
   } catch (error) {
-    console.error('Delete Slot Error:', error);
-    res.status(500).json({ message: 'Server error', error });
+    res.status(500).json({ message: error.message });
   }
 };

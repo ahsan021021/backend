@@ -2,15 +2,19 @@ import Contact from '../models/Contact.js';
 
 export const getContacts = async (req, res) => {
   try {
-    const contacts = await Contact.find();
+    const contacts = await Contact.find({ userId: req.userId });
     res.status(200).json(contacts);
-  } catch (error) {
+  } catch ( error) {
     res.status(500).json({ message: error.message });
   }
 };
 
 export const createContact = async (req, res) => {
-  const contact = new Contact(req.body);
+  const contact = new Contact({
+    ...req.body,
+    userId: req.userId,
+  });
+
   try {
     const savedContact = await contact.save();
     res.status(201).json(savedContact);
@@ -21,8 +25,11 @@ export const createContact = async (req, res) => {
 
 export const deleteContact = async (req, res) => {
   try {
-    await Contact.findByIdAndDelete(req.params.id);
-    res.status(200).json({ message: 'Contact deleted successfully' });
+    const contact = await Contact.findOneAndDelete({ _id: req.params.id, userId: req.userId });
+    if (!contact) {
+      return res.status(404).json({ message: 'Contact not found.' });
+    }
+    res.json({ message: 'Contact removed successfully.' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

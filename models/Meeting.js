@@ -22,7 +22,16 @@ const meetingSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    status: {
+      type: String,
+      default: 'active', // New field to track status
+    },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true, // Associate with userId
+    },
   },
+
   {
     timestamps: true,
   }

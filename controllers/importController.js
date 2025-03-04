@@ -1,12 +1,13 @@
 import Contact from '../models/Contact.js';
 import Opportunity from '../models/Opportunity.js';
-import ImportHistory from '../models/importHistoryModel.js';
+import ImportHistory from '../models/ImportHistory.js';
 
 export const importContacts = async (req, res) => {
   try {
-    const contacts = req.body;
+    const userId = req.user._id; // Ensure userId is extracted from the authenticated user's token
+    const contacts = req.body.map(contact => ({ ...contact, userId }));
     const result = await Contact.insertMany(contacts);
-    await ImportHistory.create({ type: 'contacts', count: contacts.length });
+    await ImportHistory.create({ type: 'contacts', count: contacts.length, userId });
     res.status(201).json(result);
   } catch (error) {
     console.error('Error importing contacts:', error);
@@ -16,9 +17,10 @@ export const importContacts = async (req, res) => {
 
 export const importOpportunities = async (req, res) => {
   try {
-    const opportunities = req.body;
+    const userId = req.user._id; // Ensure userId is extracted from the authenticated user's token
+    const opportunities = req.body.map(opportunity => ({ ...opportunity, userId }));
     const result = await Opportunity.insertMany(opportunities);
-    await ImportHistory.create({ type: 'opportunities', count: opportunities.length });
+    await ImportHistory.create({ type: 'opportunities', count: opportunities.length, userId });
     res.status(201).json(result);
   } catch (error) {
     console.error('Error importing opportunities:', error);
@@ -28,7 +30,7 @@ export const importOpportunities = async (req, res) => {
 
 export const getImportHistory = async (req, res) => {
   try {
-    const history = await ImportHistory.find().sort({ timestamp: -1 });
+    const history = await ImportHistory.find({ userId: req.user._id }).sort({ timestamp: -1 });
     res.status(200).json(history);
   } catch (error) {
     console.error('Error fetching import history:', error);

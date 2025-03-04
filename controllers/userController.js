@@ -7,7 +7,7 @@ const JWT_SECRET = 'your-hardcoded-secret-key';  // Replace with your actual sec
 
 // Function to generate a random verification code
 const generateVerificationCode = () => {
-  return Math.floor(100000 + Math.random() * 900000); // 6-digit code
+  return Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit code as a string
 };
 
 // Function to signup the user
@@ -46,11 +46,18 @@ export const verifyEmail = async (req, res) => {
   try {
     const { email, verificationCode } = req.body;
 
+    // Log the request body
+    console.log('Request body:', req.body);
+
     // Find the user by email
     const user = await UserModel.findOne({ email });
     if (!user) {
       return res.status(400).json({ message: 'Invalid email or verification code' });
     }
+
+    // Log the stored and provided verification codes
+    console.log('Stored verification code:', user.verificationCode);
+    console.log('Provided verification code:', verificationCode);
 
     // Check if the verification code matches
     if (user.verificationCode !== verificationCode) {
@@ -84,6 +91,10 @@ export const login = async (req, res) => {
     if (!user) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
+
+    // Log the provided and stored passwords
+    console.log('Provided password:', password);
+    console.log('Stored hashed password:', user.password);
 
     // Compare the provided password with the hashed password
     const isMatch = await bcrypt.compare(password, user.password);

@@ -1,11 +1,13 @@
 import express from 'express';
-import { createOpportunity, getOpportunities, updateOpportunity, deleteOpportunity } from '../controllers/opportunityController.js';
+import { getOpportunities, createOpportunity, getOpportunity, updateOpportunity, deleteOpportunity } from '../controllers/opportunityController.js';
+import { authenticateToken } from '../middleware/auth.js'; // Add this import
 
 const router = express.Router();
 
-router.post('/', createOpportunity);
-router.get('/', getOpportunities);
-router.put('/:id', updateOpportunity);
-router.delete('/:id', deleteOpportunity);
+router.get('/', authenticateToken, getOpportunities);
+router.post('/', authenticateToken, createOpportunity);
+router.get('/:id', authenticateToken, getOpportunity);
+router.put('/:id', authenticateToken, updateOpportunity);
+router.delete('/:id', authenticateToken, deleteOpportunity);
 
 export default router;

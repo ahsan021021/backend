@@ -1,18 +1,13 @@
 import express from 'express';
-import {
-  create as createAppointment,
-  list as getAllAppointments,
-  update as updateAppointment,
-  remove as deleteAppointment,
-  getAppointment
-} from '../controllers/appointmentController.js'; // Adjust path as needed
+import { getAppointments, getAppointment, createAppointment, updateAppointment, deleteAppointment } from '../controllers/appointmentController.js';
+import { authenticateToken } from '../middleware/auth.js'; // Add this import
 
 const router = express.Router();
 
-router.post('/', createAppointment);
-router.get('/:id', getAppointment);
-router.get('/', getAllAppointments);
-router.put('/:id', updateAppointment);
-router.delete('/:id', deleteAppointment);
+router.get('/', authenticateToken, getAppointments);
+router.post('/', authenticateToken, createAppointment);
+router.get('/:id', authenticateToken, getAppointment);
+router.put('/:id', authenticateToken, updateAppointment);
+router.delete('/:id', authenticateToken, deleteAppointment);
 
 export default router;

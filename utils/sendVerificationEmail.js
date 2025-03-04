@@ -6,17 +6,17 @@ export const sendVerificationEmail = async (email, verificationCode) => {
   try {
     // Setup transporter (Mailtrap for testing purposes)
     const transporter = nodemailer.createTransport({
-      host: 'sandbox.smtp.mailtrap.io',
-      port: 2525,
+      host: 'smtp.hostinger.com',
+      port: 465,
       auth: {
-        user: '3c59724290a6b8',
-        pass: 'c96e518b6974fa',
+        user: 'info@solvevare.com',
+        pass: '@Solvevare2024',
       },
     });
 
     // Define the email options
     const mailOptions = {
-      from: 'no-reply@example.com',
+      from: 'info@solvevare.com',
       to: email,
       subject: 'Email Verification Code',
       text: `Your verification code is: ${verificationCode}`,
