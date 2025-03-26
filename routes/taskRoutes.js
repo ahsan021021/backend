@@ -1,13 +1,36 @@
 import express from 'express';
-import { getTasks, createTask, getTask, updateTask, deleteTask } from '../controllers/taskController.js';
-import { authenticateToken } from '../middleware/auth.js'; // Add this import
+import {
+  createTask,
+  getAllTasks,
+  getTasksByStatus,
+  markTaskAsDone,
+  updateDueDate,
+  getTasksByDueDate,
+  deleteTask,
+} from '../controllers/taskController.js';
+import { authenticateToken } from '../middleware/auth.js'; // Middleware to authenticate users
 
 const router = express.Router();
 
-router.get('/', authenticateToken, getTasks);
+// Create a new task
 router.post('/', authenticateToken, createTask);
-router.get('/:id', authenticateToken, getTask);
-router.put('/:id', authenticateToken, updateTask);
+
+// Get all tasks for the logged-in user
+router.get('/', authenticateToken, getAllTasks);
+
+// Get tasks by status (todo or done) for the logged-in user
+router.get('/status/:status', authenticateToken, getTasksByStatus);
+
+// Mark a task as done
+router.put('/:id/done', authenticateToken, markTaskAsDone);
+
+// Update the due date of a task
+router.put('/:id/due-date', authenticateToken, updateDueDate);
+
+// Get tasks by due date
+router.get('/due-date', authenticateToken, getTasksByDueDate);
+
+// Delete a task
 router.delete('/:id', authenticateToken, deleteTask);
 
 export default router;

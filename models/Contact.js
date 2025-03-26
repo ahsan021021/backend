@@ -21,7 +21,8 @@ const contactSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now
-  }
+  },
+  deleted: { type: Boolean, default: false },
 });
 
 const Contact = mongoose.model('Contact', contactSchema);

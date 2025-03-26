@@ -32,6 +32,9 @@ import settingsRoutes from './routes/settingsRoutes.js'; // New import for setti
 import segmentsRoutes from './routes/segments.js';
 import automationsRoutes from './routes/automations.js'; // Corrected import for automations
 import scraperRoutes from './routes/scraperRoutes.js';
+import paymentRoutes from './routes/paymentRoutes.js';
+import dashboardRoutes from './routes/dashboardRoutes.js';
+import historyRoutes from './routes/historyRoutes.js';
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -43,6 +46,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Routes
 app.use('/api', userRoutes);
 app.use('/api/appointments', authenticateToken, appointmentRoutes);
+app.use('/api/history', authenticateToken, historyRoutes);
 app.use('/api/contacts', authenticateToken, contactRoutes);
 app.use('/api/companies', authenticateToken, companyRoutes);
 app.use('/api/tasks', authenticateToken, taskRoutes);
@@ -59,15 +63,16 @@ app.use('/api/manual-actions', authenticateToken, manualActionRoutes);
 app.use('/api/trigger-links', authenticateToken, triggerLinkRoutes);
 app.use('/api/business-profile', authenticateToken, businessProfileRoutes); // New route for business profile
 app.use('/api/my-profile', authenticateToken, myProfileRoutes); // New route for my profile
-app.use('/api/opportunities', authenticateToken, opportunitiesRoutes); // New route for opportunities
 app.use('/api/localization', authenticateToken, localizationRoutes); // New route for localization
-app.use('/api/email-settings', authenticateToken, emailSettingsRoutes); // New route for email settings
+app.use('/api/email-settings', authenticateToken, emailSettingsRoutes);// New route for email settings
 app.use('/api/subscribers', authenticateToken, subscriberRoutes);
 app.use('/api/campaigns', authenticateToken, campaignRoutes); // New route for campaigns
 app.use('/api/templates', authenticateToken, templatesRoutes); // New route for templates
 app.use('/api/settings', authenticateToken, settingsRoutes); // New route for settings
 app.use('/api/segments', authenticateToken, segmentsRoutes);
 app.use('/api/automations', authenticateToken, automationsRoutes); // New route for automations
+app.use('/api/dashboard',authenticateToken, dashboardRoutes);
+app.use('/api/payment', paymentRoutes);
 app.use('/api', scraperRoutes); 
 app.use('/api', authRoutes); // Add the new auth routes
 

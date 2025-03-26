@@ -1,13 +1,20 @@
 import express from 'express';
-import { getOpportunities, createOpportunity, getOpportunity, updateOpportunity, deleteOpportunity } from '../controllers/opportunityController.js';
-import { authenticateToken } from '../middleware/auth.js'; // Add this import
+import {
+  createOpportunity,
+  getOpportunitiesForStage,
+  deleteOpportunity
+} from '../controllers/opportunityController.js';
+import {  authenticateToken } from '../middleware/auth.js';
 
 const router = express.Router();
 
-router.get('/', authenticateToken, getOpportunities);
-router.post('/', authenticateToken, createOpportunity);
-router.get('/:id', authenticateToken, getOpportunity);
-router.put('/:id', authenticateToken, updateOpportunity);
-router.delete('/:id', authenticateToken, deleteOpportunity);
+// Create an opportunity for a specific stage
+router.post('/:pipelineId/:stageId/opportunities', authenticateToken, createOpportunity);
+
+// Get all opportunities for a specific stage
+router.get('/:pipelineId/:stageId/opportunities', authenticateToken, getOpportunitiesForStage);
+
+// Delete an opportunity from a specific stage
+router.delete('/:pipelineId/:stageId/opportunities/:opportunityId', authenticateToken, deleteOpportunity);
 
 export default router;

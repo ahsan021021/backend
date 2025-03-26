@@ -1,12 +1,22 @@
-// backend/routes/scraperRoutes.js
 import express from 'express';
-import scraperController from '../controllers/scraperController.js';
+import {
+  scrape,
+  exportToCSV,
+  getCSVHistory,
+  deleteCSVHistory,
+  scrapeStream,
+} from '../controllers/scraperController.js';
+import { authenticateToken } from '../middleware/auth.js';
+import { checkScraperLimit } from '../middleware/subscriptionMiddleware.js';
 
 const router = express.Router();
 
-router.post('/scrape', scraperController.scrape);
-router.post('/export', scraperController.exportToCSV);
-router.get('/history', scraperController.getCSVHistory);
-router.delete('/history/:id', scraperController.deleteCSVHistory);
+router.post('/scrape', authenticateToken, scrape, checkScraperLimit);
+router.post('/export', authenticateToken, exportToCSV);
+router.get('/history', authenticateToken, getCSVHistory);
+router.delete('/scrapehistory/:id', authenticateToken, deleteCSVHistory);
+
+
+router.get('/scrape/stream', authenticateToken, scrapeStream);
 
 export default router;

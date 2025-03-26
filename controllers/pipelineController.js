@@ -1,8 +1,8 @@
-import Pipeline from '../models/Pipeline.js';
+import Pipeline from '../models/pipelineModel.js';
 
 export const getPipelines = async (req, res) => {
   try {
-    const pipelines = await Pipeline.find({ userId: req.user._id });
+    const pipelines = await Pipeline.find({ userId: req.userId });
     res.status(200).json(pipelines);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -10,9 +10,15 @@ export const getPipelines = async (req, res) => {
 };
 
 export const createPipeline = async (req, res) => {
+  const stagesWithUserId = req.body.stages.map(stage => ({
+    ...stage,
+    userId: req.userId // Automatically add userId to each stage
+  }));
+
   const pipeline = new Pipeline({
     ...req.body,
-    userId: req.user._id,
+    stages: stagesWithUserId, // Use updated stages
+    userId: req.userId
   });
 
   try {
@@ -25,7 +31,7 @@ export const createPipeline = async (req, res) => {
 
 export const getPipeline = async (req, res) => {
   try {
-    const pipeline = await Pipeline.findOne({ _id: req.params.id, userId: req.user._id });
+    const pipeline = await Pipeline.findOne({ _id: req.params.id, userId: req.userId });
     if (!pipeline) {
       return res.status(404).json({ message: 'Pipeline not found.' });
     }
@@ -38,7 +44,7 @@ export const getPipeline = async (req, res) => {
 export const updatePipeline = async (req, res) => {
   try {
     const pipeline = await Pipeline.findOneAndUpdate(
-      { _id: req.params.id, userId: req.user._id },
+      { _id: req.params.id, userId: req.userId },
       req.body,
       { new: true }
     );
@@ -53,7 +59,7 @@ export const updatePipeline = async (req, res) => {
 
 export const deletePipeline = async (req, res) => {
   try {
-    const pipeline = await Pipeline.findOneAndDelete({ _id: req.params.id, userId: req.user._id });
+    const pipeline = await Pipeline.findOneAndDelete({ _id: req.params.id, userId: req.userId });
     if (!pipeline) {
       return res.status(404).json({ message: 'Pipeline not found.' });
     }

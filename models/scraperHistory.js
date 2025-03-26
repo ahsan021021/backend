@@ -1,13 +1,16 @@
-// backend/models/CSVHistory.js
 import mongoose from 'mongoose';
 
-const CSVHistorySchema = new mongoose.Schema({
-  date: { type: Date, default: Date.now },
+const scraperHistorySchema = new mongoose.Schema({
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   fileName: { type: String, required: true },
   keywords: { type: [String], required: true },
   locations: { type: [String], required: true },
   recordCount: { type: Number, required: true },
   data: { type: String, required: true },
+  emails: { type: [String], required: true },
+  date: { type: Date, default: Date.now },
 });
 
-export default mongoose.model('CSVHistory', CSVHistorySchema);
+const ScraperHistory = mongoose.model('ScraperHistory', scraperHistorySchema);
+
+export default ScraperHistory;

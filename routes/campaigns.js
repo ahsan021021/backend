@@ -9,14 +9,15 @@ import {
 } from '../controllers/campaignsController.js';
 
 import { authenticateToken } from '../middleware/auth.js';
+import { checkEmailLimit } from '../middleware/subscriptionMiddleware.js';
 
 const router = express.Router();
 
 router.get('/', authenticateToken, getCampaigns);
-router.post('/', authenticateToken, createCampaign);
+router.post('/', authenticateToken, checkEmailLimit, createCampaign);
 router.put('/:id', authenticateToken, updateCampaign);
 router.delete('/:id', authenticateToken, deleteCampaign);
-router.post('/:id/send', authenticateToken, sendCampaignEmails);
+router.post('/:id/send', authenticateToken, checkEmailLimit, sendCampaignEmails);
 router.patch('/:id/draft', authenticateToken, setCampaignToDraft);
 
 export default router;

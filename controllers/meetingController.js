@@ -71,7 +71,7 @@ export const createMeeting = async (req, res) => {
 export const cancelMeeting = async (req, res) => {
   try {
     const meeting = await Meeting.findOneAndUpdate(
-      { _id: req.params.id, userId: req.user._id },
+      { _id: req.params.id, userId: req.userId },
       { status: 'cancelled' },
       { new: true }
     );
@@ -90,7 +90,7 @@ export const cancelMeeting = async (req, res) => {
 export const restoreMeeting = async (req, res) => {
   try {
     const meeting = await Meeting.findOneAndUpdate(
-      { _id: req.params.id, userId: req.user._id },
+      { _id: req.params.id, userId: req.userId },
       { status: 'active' },
       { new: true }
     );
