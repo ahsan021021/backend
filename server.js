@@ -77,15 +77,14 @@ app.use('/api', scraperRoutes);
 app.use('/api', authRoutes); // Add the new auth routes
 
 // MongoDB connection
-mongoose.connect('mongodb+srv://root:root@cluster0.27cqw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
+mongoose.connect('mongodb://root:root@localhost:27017/leadsavvy?authSource=admin', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 }).then(() => {
   console.log('Connected to MongoDB');
 }).catch((err) => {
-  console.error('Failed to connect to MongoDB', err);
+  console.error('Error connecting to MongoDB:', err);
 });
-
 // Start server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
