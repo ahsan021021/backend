@@ -230,7 +230,7 @@ export const createSubscription = async (req, res) => {
     // Update the user's subscription details in the database
     user.subscriptionPlan = planId;
     user.stripeSubscriptionId = subscription.id;
-    user.scraperLimit = planId === 'free' ? 50 : planId === 'basic' ? 200 : planId === 'pro' ? 500 : 1000; // Example limits
+    user.scraperLimit = planId === 'free' ? 50 : planId === 'basic' ? 40 : planId === 'pro' ? 40 : 1000; // Example limits
     user.emailLimit = planId === 'free' ? 50 : planId === 'basic' ? 2000 : planId === 'pro' ? 5000 : 10000; // Example limits
     await user.save();
 
