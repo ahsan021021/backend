@@ -35,11 +35,17 @@ import scraperRoutes from './routes/scraperRoutes.js';
 import paymentRoutes from './routes/paymentRoutes.js';
 import dashboardRoutes from './routes/dashboardRoutes.js';
 import historyRoutes from './routes/historyRoutes.js';
+import cors from 'cors';
+
 const app = express();
 const PORT = process.env.PORT || 5000;
+const corsOptions = {
+  origin: 'https://leadsavvyai.com', // Replace with your frontend domain
+  credentials: true, // Allow cookies and authorization headers
+};
 
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
