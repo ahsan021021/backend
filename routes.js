@@ -1,5 +1,5 @@
 import express from 'express';
-import { signup, verifyEmail, login, getSubscriptionPlan, updateUserProfile, getUserProfile, updateLoginDetails,changePassword, forgotPassword, resetPassword, verifyCode, resendVerificationEmail } from './controllers/userController.js';
+import { signup, verifyEmail, login, getSubscriptionPlan, updateUserProfile, getUserProfile, updateLoginDetails,changePassword, forgotPassword, resetPassword, verifyCode, resendVerificationEmail, deleteAccount } from './controllers/userController.js';
 import { authenticateToken } from './middleware/auth.js';
 
 const router = express.Router();
@@ -14,6 +14,7 @@ router.put('/users/update-login', authenticateToken, updateLoginDetails);
 router.put('/users/change-password', authenticateToken, changePassword);
 router.post("/forgot-password", forgotPassword);
 router.post("/resend-verification-email", resendVerificationEmail);
+router.delete('/delete-account', authenticateToken, deleteAccount);
 
 // Route for verifying the code
 router.post("/verify-code", verifyCode);

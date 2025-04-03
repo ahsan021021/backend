@@ -390,3 +390,29 @@ export const login = async (req, res) => {
     res.status(500).json({ message: 'Server error', error });
   }
 };
+export const deleteAccount = async (req, res) => {
+  const { password } = req.body; // Get the password from the request body
+
+  try {
+    // Find the user by ID
+    const user = await UserModel.findById(req.userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Verify the password
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(400).json({ message: 'Invalid password' });
+    }
+
+    // Delete the user
+    await UserModel.findByIdAndDelete(req.userId);
+
+    // Respond with success
+    res.status(200).json({ message: 'Account deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting account:', error);
+    res.status(500).json({ message: 'An error occurred while deleting the account' });
+  }
+};
