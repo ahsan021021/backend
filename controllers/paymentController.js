@@ -195,9 +195,9 @@ export const createSubscription = async (req, res) => {
     // Validate the plan
     const planLimits = {
       free: null, // Free plan has no price ID
-      basic: 'price_1R47d42MWieuisj2IJG275r8', // Replace with your Stripe price ID
-      pro: 'price_1R47ea2MWieuisj2ImVedlaJ', // Replace with your Stripe price ID
-      premium: 'price_1R47fE2MWieuisj222qlqczi', // Replace with your Stripe price ID
+      basic: 'price_1R8CLVLkcPTy2rjPC3obPtCy', // Replace with your Stripe price ID
+      pro: 'price_1R8CM6LkcPTy2rjPF1OwWmG3', // Replace with your Stripe price ID
+      premium: 'price_1R8CMmLkcPTy2rjP0tBW5qD0', // Replace with your Stripe price ID
     };
 
     if (!planLimits[planId]) {
